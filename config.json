@@ -1,0 +1,16 @@
+{
+    "classification_treshhold": 0.65,
+    "training": {
+        "n_epoch": 1000,
+        "pkeep": 0.75,
+        "display_step": 100,
+        "batch_size": 100,
+        "batch_size_test": 10000
+    },
+    "model": {
+        "image_width": 28,
+        "image_height": 28,
+        "learning_rate": 0.003,
+        "tf_random_seed": 0
+    }
+}
