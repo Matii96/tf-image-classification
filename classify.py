@@ -20,7 +20,7 @@ def main():
         prediction = sess.run(net.Y, feed_dict = {net.X: image})[0]
 
     prediction = map(lambda x: float(x), prediction)
-
+    
     print(json.dumps({
         'prediction': list(prediction)
     }, ensure_ascii=False).encode('utf8'))

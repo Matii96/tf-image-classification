@@ -46,7 +46,7 @@ def main():
             #Display information obout progress
             print('{0}\r'.format(' '*117), end='')
             if i%utils.config['training']['display_step'] == 0:
-                print("#%d Accuracy=%.2f%%, loss=%.2f%%" % (i,acc*100,loss*100))
+                print("#%d Accuracy=%.2f%%, loss=%.2f" % (i,acc*100,loss*100))
             utils.update_progress(i/utils.config['training']['n_epoch'])
 
 if __name__ == "__main__":
