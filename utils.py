@@ -20,10 +20,24 @@ if os.path.isfile(train_data_path):
     with open(train_data_path, encoding='utf-8') as json_data:
         train_data = json.load(json_data)
 
-def update_progress(progress):
-    width = 100
-    progress = int(width * progress)
-    print('Progress: [{0}{1}] {2}%\r'.format('#'*progress, ' '*(width - progress), progress), end='')
+progress_last = -1
+def display_progress(i, acc, loss, width=100):
+    progress = int(width * i / config['training']['n_epoch'])
+    update_statistics = (i%config['training']['display_step'] == 0)
+
+    #Clear current line
+    global progress_last
+    if progress > progress_last or update_statistics:
+        print('{0}\r'.format(' '*117), end='')
+
+    #Print information about test accuracy and loss
+    if update_statistics:
+        print("#%d Accuracy=%.2f%%, loss=%.2f" % (i, acc*100, loss))
+
+    #Update progress bar
+    if progress > progress_last or update_statistics:
+        print('Progress: [{0}{1}] {2}%\r'.format('#'*progress, ' '*(width - progress), progress), end='')
+    progress_last = progress
 
 def convert_image_to_2d_array(filepath):
     img = cv2.imread(filepath)
@@ -86,7 +100,6 @@ def random_batch(size):
             })
 
     #Pick first size elements of result
-    random.shuffle(result)
     result = random.sample(result, size)
 
     result_x = []

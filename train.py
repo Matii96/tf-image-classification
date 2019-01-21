@@ -44,10 +44,7 @@ def main():
                 save_path = saver.save(sess, utils.model_dir)
 
             #Display information obout progress
-            print('{0}\r'.format(' '*117), end='')
-            if i%utils.config['training']['display_step'] == 0:
-                print("#%d Accuracy=%.2f%%, loss=%.2f" % (i,acc*100,loss*100))
-            utils.update_progress(i/utils.config['training']['n_epoch'])
+            utils.display_progress(i, acc, loss)
 
 if __name__ == "__main__":
     main()
