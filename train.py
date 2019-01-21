@@ -18,9 +18,11 @@ def main():
         }
         file.write(json.dumps(train_data))
 
+    print('Loading test batch...')
+    test_images, test_labels = utils.random_batch(utils.config['training']['batch_size_test'])
+
     with tf.Session() as sess:
         sess.run(tf.global_variables_initializer())
-        test_images, test_labels = utils.random_batch(utils.config['training']['batch_size_test'])
 
         last_acc = 0
         for i in range(utils.config['training']['n_epoch']+1):
