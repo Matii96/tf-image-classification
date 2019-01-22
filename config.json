@@ -1,14 +1,14 @@
 {
     "training": {
-        "n_epoch": 1000,
+        "n_epoch": 5000,
         "pkeep": 0.75,
         "display_step": 100,
         "batch_size": 100,
         "batch_size_test": 1000
     },
     "model": {
-        "image_width": 200,
-        "image_height": 200,
+        "image_width": 24,
+        "image_height": 24,
         "learning_rate": 0.003,
         "tf_random_seed": 0
     }
