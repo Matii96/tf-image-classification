@@ -19,10 +19,11 @@ def main():
         image = [utils.convert_image_to_2d_array(sys.argv[1])]
         prediction = sess.run(net.Y, feed_dict = {net.X: image})[0]
 
-    prediction = map(lambda x: float(x), prediction)
-    
+    prediction = list(map(lambda x: float(x), prediction))
+
     print(json.dumps({
-        'prediction': list(prediction)
+        'distributions': list(prediction),
+        'prediction': utils.labels[prediction.index(max(prediction))]
     }, ensure_ascii=False).encode('utf8'))
 
 if __name__ == "__main__":

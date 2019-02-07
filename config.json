@@ -4,7 +4,7 @@
         "pkeep": 0.75,
         "display_step": 100,
         "batch_size": 100,
-        "batch_size_test": 1000
+        "batch_size_test": 5000
     },
     "model": {
         "image_width": 24,

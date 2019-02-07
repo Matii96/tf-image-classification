@@ -25,8 +25,6 @@ b4 = tf.Variable(tf.truncated_normal([FC4], stddev=0.1))
 W5 = tf.Variable(tf.truncated_normal([FC4, len(utils.labels)], stddev=0.1))
 b5 = tf.Variable(tf.truncated_normal([len(utils.labels)], stddev=0.1))
 
-XX = tf.reshape(X, [-1, utils.config['model']['image_width']*utils.config['model']['image_height']])
-
 stride = 1
 Y1 = tf.nn.relu(tf.nn.conv2d(X, W1, strides=[1, stride, stride, 1], padding='SAME') + b1)
 
