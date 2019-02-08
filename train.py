@@ -18,15 +18,23 @@ def main():
         }
         file.write(json.dumps(train_data))
 
-    print('Loading test batch...')
-    test_images, test_labels = utils.random_batch(utils.config['training']['batch_size_test'])
+    #Loading dataset and displaying information about it
+    print('Count of images:')
+    dataset_count = 0
+    for labelID in range(len(utils.dataset)):
+        label_count = len(utils.dataset[labelID])
+        dataset_count += label_count
+        print('{0}: {1}'.format(utils.labels[labelID], label_count))
+    print('Total: {0}'.format(dataset_count))
 
+    print('Loading test batch...')
+    test_images, test_labels = utils.random_batch(utils.config['training']['batch_size_test'], True)
     with tf.Session() as sess:
         sess.run(tf.global_variables_initializer())
 
         last_acc = 0
         for i in range(utils.config['training']['n_epoch']+1):
-            batch_X, batch_Y = utils.random_batch(utils.config['training']['batch_size'])
+            batch_X, batch_Y = utils.random_batch()
 
             # the back-propagation training step
             sess.run(net.train_step, feed_dict={net.X: batch_X, net.Y_: batch_Y, net.pkeep: utils.config['training']['pkeep']})

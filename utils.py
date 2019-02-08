@@ -45,7 +45,7 @@ def convert_image_to_2d_array(filepath):
     img = cv2.cvtColor(img, cv2.COLOR_RGB2GRAY)
     img = np.divide(img, 255)
     img = list(img)
-    for i in range(0, len(img)):
+    for i in range(len(img)):
         img[i] = [[pixel] for pixel in img[i]]
 
     #Finishing job
@@ -62,35 +62,39 @@ def load_labels():
 labels = load_labels()
 
 #Collect all data set file names
-dataset = None
 def load_dataset():
     dataset = []
     for label in labels:
         images_set = []
-        for file in os.listdir(os.path.join(dataset_path, label)):
+        label_directory = os.listdir(os.path.join(dataset_path, label))
+        for file in label_directory:
             if not os.path.isfile(os.path.join(dataset_path, label, file)):
                 continue
             images_set.append(file)
         dataset.append(images_set)
 
-    #Finishing job
+    #Finishing jobs
     return dataset
+dataset = load_dataset()
 
 #Read random batch from dataset
-def random_batch(size):
+def random_batch(size=config['training']['batch_size'], unique=False):
     global dataset
-    if dataset is None:
-        dataset = load_dataset()
 
     result = []
     images_per_label = math.ceil(size / len(labels))
 
-    for images_setID in range(0, len(dataset)):
+    for images_setID in range(len(dataset)):
         images_set = dataset[images_setID]
+        images_set_len = len(images_set)
+
+        #Check if label has any image
+        if images_set_len == 0:
+            continue
 
         random_set = []
-        random_set += images_set * int(images_per_label // len(images_set))
-        random_set += random.sample(images_set, images_per_label % len(images_set))
+        random_set += images_set * int(images_per_label // images_set_len)
+        random_set += random.sample(images_set, images_per_label % images_set_len)
 
         for image in random_set:
             file_path = os.path.join(labels[images_setID], image)
@@ -98,8 +102,15 @@ def random_batch(size):
                 'file_path': file_path,
                 'images_setID': images_setID
             })
+        
+        #Remove image from dataset if batch is set to be unique
+        if unique:
+            random_set = list(set(random_set))
+            for image in random_set:
+                dataset[images_setID].remove(image)
 
     #Pick first size elements of result
+    result = result * math.ceil(size / len(result))
     result = random.sample(result, size)
 
     result_x = []
